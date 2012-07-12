@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Feedback System</title>
+
+		<link href="stylesheets/bootstrap.css" rel="stylesheet">
+		<style type="text/css">
+		  body {
+		    padding-top: 60px;
+		    padding-bottom: 40px;
+		  }
+		  .sidebar-nav {
+		    padding: 9px 0;
+		  }
+/*		  
+#feedback-list-item .icon-remove {
+	display: none;
+	cursor: pointer;
+}
+*/
+
+#feedback_list_ul li:hover {
+  	/*display: block;*/
+  	background-color: lightgray;
+  	/*color: white;*/
+}
+
+#feedback-list-item .icon-remove {
+	display: none;
+	cursor: pointer;
+}
+
+#feedback_list_ul li:hover .icon-remove {
+  	display: block;
+}
+
+#feedback-list-item .icon-remove:hover {
+  	background-position: 0 -20px;
+}
+
+		</style>
+		<link href="stylesheets/bootstrap-responsive.css" rel="stylesheet">
+
+
+		<script src="javascripts/lib/jquery-1.7.1.js"></script>
+		<script src="javascripts/lib/bootstrap.js"></script>
+
+		<script src="javascripts/lib/underscore.js"></script>
+		<script src="javascripts/lib/backbone.js"></script>
+		<!-- script src="javascripts/lib/Backbone-localstorage.js"></script> -->
+
+		<script type="text/template" id="feedbacks-summary-tmpl">
+			<h1>loaded summary template</h1>
+		</script>
+
+		<script type="text/template" id="feedbacks-list-tmpl">
+			<h1>loaded list template <a href=""><i class='icon-search'></i></a></h1>
+
+			<form class="well form-search">
+			  <input type="text" class="input-medium search-query">
+			  <button type="submit" class="btn" id="search-btn">Search</button>
+			</form>			
+			<div id="myCarousel" class="carousel slide">
+				<div class="carousel-inner">
+					<ul id="feedback_list_ul" class="unstyled"></ul>
+				</div>
+				<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>	
+				<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+			</div>
+		</script>		
+
+		<script type="text/template" id="feedbacks-input-tmpl">
+			<h1>loaded new template</h1>
+			<form class="well">
+				<div id="rating-grp" class="btn-toolbar" data-toggle="buttons-radio">
+					<input class="btn" type="button" value="1">
+					<input class="btn" type="button" value="2">
+					<input class="btn" type="button" value="3">
+					<input class="btn" type="button" value="4">
+				</div>
+
+				<label>Rating</label>
+				<div class="btn-group">
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+						Category<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<!-- dropdown menu links -->
+						<li>Feedback</li>
+						<li>Complaint</li>
+						<li>Suggestion</li>
+						<li>Idea</li>    
+					</ul>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="textarea">Comments</label>
+					<div class="controls">
+						<textarea id='comments' class="input-xlarge" rows="3"></textarea>
+					</div>	
+				</div>
+
+				<input class="btn btn-primary" type="submit" id="sendFeedback" value="Submit">
+
+			</form>			
+		</script>
+
+		<script type="text/template" id="feedback-list-item-tmpl">
+			<!-- id-date-status-comments-->
+
+			<div id="feedback-list-item">
+				<a data-toggle="modal" href="#myModal" rel="tooltip" title="change status"> 
+					<span class="label label-warning"><%= status %></span></a>
+
+				<div class="modal hide" id="myModal">
+				  <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal">×</button>
+				    <h3>Modal header</h3>
+				  </div>
+				  <div class="modal-body">
+				    <p>One fine body…</p>
+				  </div>
+				  <div class="modal-footer">
+				    <a href="#" class="btn" data-dismiss="modal">Close</a>
+				    <a href="#" class="btn btn-primary" id="change-status">Save changes</a>
+				  </div>
+				</div>
+
+
+				<span class="badge badge-warning"><%= priority %></span>
+				<div class="pull-right">
+					<div class='lead'><%= rating %></div>
+				</div>
+				<h6>comments: 0</h6><br>
+				<%= comments %>
+
+				<br></br>
+				<h6><%= create_at %></h6>
+			    <a href=""><i class="icon-comment"></i> Comment</a>
+				<a href=""><i class="icon-remove pull-right"></i></a>
+			</div>
+
+		</script>
+
+		<script src="javascripts/models.js"></script>
+		<script src="javascripts/collections.js"></script>
+		<script src="javascripts/views.js"></script>
+		<script src="javascripts/routers.js"></script>
+		<script src="javascripts/apps.js"></script>
+	</head>
+	<body>
+		<header id="myheader">
+			<div class="navbar navbar-fixed-top">
+				<div class="navbar-inner">
+					<div class="container">
+						<ul class="nav nav-tabs" id="myTab">
+							<li><a href="">New</a></li>
+							<li><a href="">Dashboard</a></li>
+							<li><a href="">Lists</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</header>
+		<section id="center_content">
+			<div id="content_subnav">
+				<ul class="nav nav-tabs" id="my-nav-tab">
+				    <li class="active"><a href="#summary" data-toggle="tab"><i class="icon-remove"></i> Summary</a></li>
+				    <li><a href="#lists" data-toggle="tab"><i class="icon-th-list"></i> Lists</a></li>
+				    <li><a href="#newFeedback" data-toggle="tab"><i class=" icon-plus-sign"></i> New</a></li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="summary">
+						<p>I'm in Summary feedback Tab Pane</p>
+					</div>
+					<div class="tab-pane" id="lists">
+						<p>I'm in Lists feedback Tab tab-pane</p>
+					</div>
+					<div class="tab-pane" id="newFeedback">
+						<p>I'm in New feedback Tab Pane</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<footer>
+			<h4>Vidcentum R&D Pvt. Ltd, Hyderabad</h4>
+		</footer>
+
+	</body>
+</html>
