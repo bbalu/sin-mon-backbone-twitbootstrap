@@ -40,9 +40,33 @@ jQuery ->
 	class FeedbackListView extends Backbone.View
 		el: "#lists"
 		template: _.template($('#feedbacks-list-tmpl').html())
+		events:
+			#'click #prev': 'prevSliderClick'
+			#'click #next': 'nextSliderClick'
+			'click #sort-btn': 'sortby'
+
+		sortby: (e) ->	
+			console.log 'Sort Button clicked...........'
+			e.preventDefault()
+			#@collection.sortBy (feedback) -> 
+			#						Math.sin(feedback.get("rating"))
+			#@render
+
+		prevSliderClick: (e) ->
+			console.log 'FeedbackListView.prevSliderClick', window.mySwipe
+			e.preventDefault()
+			window.mySwipe.prev()
+			return false
+
+		nextSliderClick: (e) ->
+			console.log 'FeedbackListView.nextSliderClick', window.mySwipe
+			e.preventDefault()
+			window.mySwipe.next()
+			return false
 
 		initialize: ->
 			console.log 'FeedbackListView.initialize'
+			@collection.on 'reset', @render, @
 			@collection.on 'remove', @render, @
 
 		render: ->
@@ -52,9 +76,18 @@ jQuery ->
 			$(@el).empty()
 			$(@el).html @template()
 			if (collection.length)
+				# add the swipe event
+				#console.log 'swipe:', $('#slider')
+				#console.log 'swipe:', window.mySwipe
+
 				collection.each (feedback) ->
 					view = new FeedBackListItemView collection:collection, model:feedback
 					$("#feedback_list_ul").append view.render().el
+
+				#window.mySwipe = new Swipe document.getElementById('slider', speed: 0)
+				#window.mySwipe.speed = 0;
+				#$("#feedback_list_ul").children(":first").css("display", "block")
+				#window.mySwipe.slide(0, 1000)
 			@
 
 	class FeedBackListItemView extends Backbone.View
@@ -62,8 +95,12 @@ jQuery ->
 		className: "well span4 item"
 		template: _.template $("#feedback-list-item-tmpl").html()
 		events:
+			'swipe': 'swipeEvent'
 			'click .icon-remove': 'removeList'
 			'click #change-status': 'changeStatus'
+
+		swipeEvent: ->
+			console.log 'swipeEvent on the li. Horraaaaaaaaaaaaaaaaaaay!'
 
 		initialize: ->
 			#console.log "FeedBackListItemView.initialize::"
@@ -98,6 +135,7 @@ jQuery ->
 			console.log 'FeedbackNavView.render'
 			$(@el).html @template()
 			@
+
 
 	class AppView extends Backbone.View
 		el: "#center_content"

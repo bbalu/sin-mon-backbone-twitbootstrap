@@ -1,0 +1,71 @@
+<html>
+<head>
+	<title>Test Faye Server</title>
+	<script src="http://localhost:8000/faye/client.js"></script>
+	<script src="public/javascripts/lib/jquery-1.7.1.js"></script>
+</head>
+<body>
+	<div id="container">
+
+		<!-- message textarea --><!-- send button -->
+		<!-- recv window -->
+		<div>
+			<input type="text" id="name">Name:</input>
+			</br>
+			<input type="text" id="subscriber-name"></input>
+			<button name="snd-btn" id="subscribe-btn">send</button>
+			</br>
+			<input type="text" id="message-txt">Text:</input>
+			<button name="snd-btn" id="snd-btn">send</button>
+			<ul id="messages"></ul>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			console.log('document ready!!!');
+
+	        var client = new Faye.Client('http://localhost:8000/faye');
+	        var publication, subscription;
+
+	        //bind to send button
+	        $('#snd-btn').on('click', function(){
+	        	console.log('send button clicked');
+	        	var msg = $('#message-txt').val();
+	        	var name = $('#name').val();
+	        	console.log("msg to sent:" + msg);
+	        	publication = client.publish('/'+ name, {text: msg});	
+				publication.callback(function() {
+				  console.log('Message received by server!');
+				});
+
+				publication.errback(function(error) {
+				  alert('There was a problem: ' + error.message);
+				});			
+	        });
+
+
+	        //bind to receive event 
+	        $('#subscribe-btn').on('click', function(){
+
+		        var sub_name = $('#subscriber-name').val();
+		        subscription = client.subscribe('/' + sub_name, function(message) {
+		  			// handle message
+		  			console.log(message);
+		  			$('#messages').append('<li>'+ sub_name + ':' + message.text + '</li>');
+				});
+
+				subscription.callback(function() {
+		  			console.log('Subscription is now active!');
+				});
+
+				subscription.errback(function(error) {
+		  			alert(error.message);
+				});
+
+			});	        
+
+	 	});
+	</script>
+</body>
+</html>

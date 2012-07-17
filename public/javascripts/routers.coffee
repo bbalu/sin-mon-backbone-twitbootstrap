@@ -6,16 +6,18 @@ class FeedbacksRouter extends Backbone.Router
 		
 	initialize: ->
 		console.log 'router initialize'
-
-	rootPage: ->
-		console.log 'rootPage called'
+		
 		@appView = new app.AppView collection: app.feedbacks
-		app.feedbacks.fetch()		
 
 		# summary pane is active by default
 		@setActivePane 0
 
+	rootPage: ->
+		console.log 'rootPage called'
+		app.feedbacks.fetch()		
+
 	setActivePane: (paneId) ->
+		console.log 'PaneId:', paneId 
 		@appView.setActivePane paneId
 
 	newPage: ->

@@ -16,4 +16,5 @@ class Feedbacks extends Backbone.Collection
 		@filter( (feedback)-> return ( feedback.get('email') || feedback.get('newsletter') ) )
 
 @app = window.app ? {}
+@app.Feedbacks = Feedbacks
 @app.feedbacks = new Feedbacks

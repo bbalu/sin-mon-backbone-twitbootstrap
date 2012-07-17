@@ -8,6 +8,7 @@
     var router, setupErrorHandlers;
     console.log('apps.coffee');
     $('#my-nav-tab').tab();
+    console.log('slider:', $('#slider'));
     setupErrorHandlers = function() {
       return $(document).ajaxError(function(error, xhr, settings, exception) {
         var message, _ref1;

@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Feedback System</title>
 
+		<link href="http://fonts.googleapis.com/css?family=Asap:400,700,400italic,700italic&amp;subset=latin,latin-ext" rel="stylesheet">
 		<link href="stylesheets/bootstrap.css" rel="stylesheet">
 		<style type="text/css">
 		  body {
@@ -21,38 +22,46 @@
 }
 */
 
+#feedback_list_ul li {
+  	/* display: none;  added for swipe.js */
+  	/*background-color: lightgray; */
+  	/*color: white;*/
+}
+
 #feedback_list_ul li:hover {
   	/*display: block;*/
-  	background-color: lightgray;
+  	/*background-color: lightgray; */
   	/*color: white;*/
 }
 
 #feedback-list-item .icon-remove {
-	display: none;
+	/* display: none; */
 	cursor: pointer;
 }
 
 #feedback_list_ul li:hover .icon-remove {
-  	display: block;
+  	/* display: block; */
 }
 
 #feedback-list-item .icon-remove:hover {
-  	background-position: 0 -20px;
+  	/* background-position: 0 -20px; */
 }
 
 		</style>
 		<link href="stylesheets/bootstrap-responsive.css" rel="stylesheet">
 
-
 		<script src="javascripts/lib/jquery-1.7.1.js"></script>
 		<script src="javascripts/lib/bootstrap.js"></script>
 
 		<script src="javascripts/lib/underscore.js"></script>
+		<script src="javascripts/lib/json2.js"></script>
 		<script src="javascripts/lib/backbone.js"></script>
+		<!-- script src="javascripts/lib/swipe.js"></script> -->
+
 		<!-- script src="javascripts/lib/Backbone-localstorage.js"></script> -->
 
 		<script type="text/template" id="feedbacks-summary-tmpl">
-			<h1>loaded summary template</h1>
+			<p><span class="label label-info">Hint</span>loaded summary template</p>
 		</script>
 
 		<script type="text/template" id="feedbacks-list-tmpl">
@@ -61,14 +70,25 @@
 			<form class="well form-search">
 			  <input type="text" class="input-medium search-query">
 			  <button type="submit" class="btn" id="search-btn">Search</button>
+			  <button class="btn" id="sort-btn">Sort</button>
 			</form>			
-			<div id="myCarousel" class="carousel slide">
+
+			<!-- nav>
+				<a href='#' id='prev'><em>Prev</em></a>
+				<a href='#' id='next'><em>Next</em></a>
+			</nav -->
+
+			<div id='slider'>
+				<ul id="feedback_list_ul" class="unstyled"></ul>
+			</div>
+
+			<!-- div id="myCarousel" class="carousel slide">
 				<div class="carousel-inner">
 					<ul id="feedback_list_ul" class="unstyled"></ul>
 				</div>
 				<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>	
 				<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-			</div>
+			</div-->
 		</script>		
 
 		<script type="text/template" id="feedbacks-input-tmpl">
@@ -141,14 +161,102 @@
 			    <a href=""><i class="icon-comment"></i> Comment</a>
 				<a href=""><i class="icon-remove pull-right"></i></a>
 			</div>
+		</script>
+			
+		<script type="text/html" id="resultItemTemplate">
+			<div class="result row">
+					<div class="title">
+					<h4><%= status %></h4>
+					<div class="meta"><strong>Meta-data:</strong> Rating: <%= rating %>, Priority: <%= priority %></span>
+					</div>
 
+					<div class="span12 cover">
+					   <div class="span4">
+					   comments: 0 <br><%= create_at %></div>
+					   <div class="synop span8">
+					   	<%= comments %>
+					   	</div>
+					</div>
+			</div>
 		</script>
 
+		<!-- sample template for pagination UI -->
+		<script type="text/html" id="tmpServerPagination">
+			<div class="breadcrumb">
+			  	<span class="cell">
+					<% for(p=0;p<=totalPages;p++){
+					%>
+						<% if (currentPage == p) { %>
+							<span class="page selected"><%= p %></span>
+						<% } else { %>
+							<a href="#" class="page"><%= p %></a>
+						<% } %>	
+					<%	
+					}%>
+
+					<span class="divider">/</span>
+
+					<% if (currentPage > firstPage) { %>
+						<a href="#" class="serverprevious">Previous</a>
+					<% }else{ %>
+						<span>Previous</span>
+					<% }%>
+
+					<% if (currentPage < totalPages) { %>
+						<a href="#" class="servernext">Next</a>
+					<% } %>
+
+					<% if (firstPage != currentPage) { %>
+						<a href="#" class="serverfirst">First</a>
+					<% } %>
+
+					<% if (lastPage != currentPage) { %>
+						<a href="#" class="serverlast">Last</a>
+					<% } %>
+
+
+					<span class="divider">/</span>
+
+					<span class="cell serverhowmany">
+						Show
+						<a href="#" class="selected">3</a>
+						|
+						<a href="#" class="">9</a>
+						|
+						<a href="#" class="">12</a>
+						per page
+					</span>
+
+					
+					<span class="divider">/</span>
+					<span class="cell first records">
+						Page: <span class="current"><%= currentPage %></span>
+						of
+						<span class="total"><%= totalPages %></span>
+									shown
+					</span>
+
+				<span class="divider">/</span>
+
+				<span class="cell sort">
+					<a href="#" class="orderUpdate btn small">Sort by:</a>
+				</span>
+
+				<select id="sortByField">
+					<option value="cid">Select a field to sort on</option>
+				 	<option value="ReleaseYear">Release year</option>
+				 	<option value="ShortName">Alphabetical</option>
+				</select>
+			  	</span>
+
+			</div>
+		</script>
 		<script src="javascripts/models.js"></script>
 		<script src="javascripts/collections.js"></script>
 		<script src="javascripts/views.js"></script>
 		<script src="javascripts/routers.js"></script>
 		<script src="javascripts/apps.js"></script>
+
 	</head>
 	<body>
 		<header id="myheader">
@@ -173,6 +281,7 @@
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="summary">
+
 						<p>I'm in Summary feedback Tab Pane</p>
 					</div>
 					<div class="tab-pane" id="lists">

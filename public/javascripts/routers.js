@@ -19,19 +19,20 @@
     };
 
     FeedbacksRouter.prototype.initialize = function() {
-      return console.log('router initialize');
+      console.log('router initialize');
+      this.appView = new app.AppView({
+        collection: app.feedbacks
+      });
+      return this.setActivePane(0);
     };
 
     FeedbacksRouter.prototype.rootPage = function() {
       console.log('rootPage called');
-      this.appView = new app.AppView({
-        collection: app.feedbacks
-      });
-      app.feedbacks.fetch();
-      return this.setActivePane(0);
+      return app.feedbacks.fetch();
     };
 
     FeedbacksRouter.prototype.setActivePane = function(paneId) {
+      console.log('PaneId:', paneId);
       return this.appView.setActivePane(paneId);
     };
 

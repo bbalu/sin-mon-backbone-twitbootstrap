@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+          "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <title>Jasmine Test Runner</title>
+    <link rel="stylesheet" type="text/css" href="lib/jasmine-1.2.0/jasmine.css">
+    <script type="text/javascript" src="lib/jasmine-1.2.0/jasmine.js"></script>
+    <script type="text/javascript" src="lib/jasmine-1.2.0/jasmine-html.js"></script>
+
+    <script type="text/javascript" src="lib/phantom-jasmine/console-runner.js"></script>
+
+    <!-- Include source files here... -->
+    <script src="../javascripts/lib/jquery-1.7.1.js"></script>
+    <script src="../javascripts/lib/bootstrap.js"></script>
+
+    <script src="../javascripts/lib/underscore.js"></script>
+    <script src="../javascripts/lib/json2.js"></script>
+    <script src="../javascripts/lib/backbone.js"></script>
+
+
+    <!-- NOTE: Don't include time_log.js since it kicks off routing and rendering. -->
+    <!--script src="../javascripts/models.js"></script>
+    <script src="../javascripts/collections.js"></script>
+-->
+    <script src="tests-spec.js"></script>
+  </head>
+  <body>
+
+    <script type="text/javascript">
+      //jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+      //jasmine.getEnv().execute();
+
+      var console_reporter = new jasmine.ConsoleReporter();
+      jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+      jasmine.getEnv().addReporter(console_reporter);
+      jasmine.getEnv().execute();
+
+    </script>
+
+  </body>
+</html>

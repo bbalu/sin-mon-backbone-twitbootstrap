@@ -5,6 +5,9 @@ jQuery ->
 
       $('#my-nav-tab').tab()
           
+
+      console.log 'slider:', $('#slider')    
+
       setupErrorHandlers = ->
           $(document).ajaxError (error, xhr, settings, exception) ->
               # NOTE: Status will be 0 if the server is unreachable.

@@ -28,6 +28,12 @@
 
     Feedback.prototype.initialize = function() {};
 
+    Feedback.prototype.validate = function(attrs) {
+      if (attrs.hasOwnProperty('completed') && !_.isBoolean(attrs.completed)) {
+        return 'Feedback.completed must be a boolean value.';
+      }
+    };
+
     Feedback.prototype.clear = function() {
       var status;
       status = this.destroy();

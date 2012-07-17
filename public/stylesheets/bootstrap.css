@@ -157,11 +157,15 @@ textarea {
 
 body {
   margin: 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13px;
-  line-height: 18px;
-  color: #333333;
-  background-color: #ffffff;
+  font-family: "Asap","Helvetica Neue", Helvetica, Arial, sans-serif;
+  /*font-size: 13px;
+  line-height: 18px;*/
+  font-size: 16px;
+  line-height: 24px;
+  /*color: #333333;
+  background-color: #ffffff;*/
+  color: white;
+  background-color: #000000;
 }
 
 a {
@@ -763,7 +767,7 @@ input,
 button,
 select,
 textarea {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Asap", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 label {
@@ -2488,7 +2492,8 @@ table .span24 {
   min-height: 20px;
   padding: 19px;
   margin-bottom: 20px;
-  background-color: #f5f5f5;
+  /*background-color: #f5f5f5;*/
+  background-color: gray;
   border: 1px solid #eee;
   border: 1px solid rgba(0, 0, 0, 0.05);
   -webkit-border-radius: 4px;
@@ -3699,7 +3704,7 @@ input[type="submit"].btn.btn-mini {
 
 .navbar-search .search-query {
   padding: 4px 9px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Asap","Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
   font-weight: normal;
   line-height: 1;
@@ -4508,7 +4513,8 @@ a.thumbnail:hover {
 
 .label,
 .badge {
-  font-size: 10.998px;
+  /*font-size: 10.998px;*/
+  font-size: 13.536px;
   font-weight: bold;
   line-height: 14px;
   color: #ffffff;

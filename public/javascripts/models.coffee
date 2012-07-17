@@ -12,6 +12,10 @@ class Feedback extends Backbone.Model
 
 	initialize: ->
 
+	validate: (attrs) ->
+		if (attrs.hasOwnProperty('completed') && !_.isBoolean(attrs.completed))
+			'Feedback.completed must be a boolean value.';
+
 	#TBD: override validate() method 
 	clear: ->
 		status = @destroy()

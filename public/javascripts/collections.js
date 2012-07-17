@@ -41,6 +41,8 @@
 
   this.app = (_ref = window.app) != null ? _ref : {};
 
+  this.app.Feedbacks = Feedbacks;
+
   this.app.feedbacks = new Feedbacks;
 
 }).call(this);

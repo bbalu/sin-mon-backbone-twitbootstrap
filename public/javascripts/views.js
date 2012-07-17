@@ -83,8 +83,32 @@
 
       FeedbackListView.prototype.template = _.template($('#feedbacks-list-tmpl').html());
 
+      FeedbackListView.prototype.events = {
+        'click #sort-btn': 'sortby'
+      };
+
+      FeedbackListView.prototype.sortby = function(e) {
+        console.log('Sort Button clicked...........');
+        return e.preventDefault();
+      };
+
+      FeedbackListView.prototype.prevSliderClick = function(e) {
+        console.log('FeedbackListView.prevSliderClick', window.mySwipe);
+        e.preventDefault();
+        window.mySwipe.prev();
+        return false;
+      };
+
+      FeedbackListView.prototype.nextSliderClick = function(e) {
+        console.log('FeedbackListView.nextSliderClick', window.mySwipe);
+        e.preventDefault();
+        window.mySwipe.next();
+        return false;
+      };
+
       FeedbackListView.prototype.initialize = function() {
         console.log('FeedbackListView.initialize');
+        this.collection.on('reset', this.render, this);
         return this.collection.on('remove', this.render, this);
       };
 
@@ -126,8 +150,13 @@
       FeedBackListItemView.prototype.template = _.template($("#feedback-list-item-tmpl").html());
 
       FeedBackListItemView.prototype.events = {
+        'swipe': 'swipeEvent',
         'click .icon-remove': 'removeList',
         'click #change-status': 'changeStatus'
+      };
+
+      FeedBackListItemView.prototype.swipeEvent = function() {
+        return console.log('swipeEvent on the li. Horraaaaaaaaaaaaaaaaaaay!');
       };
 
       FeedBackListItemView.prototype.initialize = function() {};
